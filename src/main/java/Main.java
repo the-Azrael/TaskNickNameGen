@@ -108,7 +108,7 @@ public class Main {
             ascOrderThread.join();
             System.out.println("Красивых слов с длиной 3: " + countOf3.get() + " шт.");
             System.out.println("Красивых слов с длиной 4: " + countOf4.get() + " шт.");
-            System.out.println("Красивых слов с длиной 4: " + countOf5.get() + " шт.");
+            System.out.println("Красивых слов с длиной 5: " + countOf5.get() + " шт.");
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
