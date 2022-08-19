@@ -1,11 +1,12 @@
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Main {
     private static final int MAX_WORDS = 100_000;
     private static final int WORD_MIN_LENGTH = 3;
-    private static volatile int countOf3 = 0;
-    private static volatile int countOf4 = 0;
-    private static volatile int countOf5 = 0;
+    private static AtomicInteger countOf3 = new AtomicInteger(0);
+    private static AtomicInteger countOf4 = new AtomicInteger(0);
+    private static AtomicInteger countOf5 = new AtomicInteger(0);
     private static final int LENGTH_3 = 3;
     private static final int LENGTH_4 = 4;
     private static final int LENGTH_5 = 5;
@@ -59,13 +60,13 @@ public class Main {
         Thread palindromeThread = new Thread(() -> {
             for (String str : texts) {
                 if (str.length() == LENGTH_3 && isPalindrome(str)) {
-                    countOf3++;
+                    countOf3.getAndAdd(1);
                 }
                 if (str.length() == LENGTH_4 && isPalindrome(str)) {
-                    countOf4++;
+                    countOf4.getAndAdd(1);
                 }
                 if (str.length() == LENGTH_5 && isPalindrome(str)) {
-                    countOf5++;
+                    countOf5.getAndAdd(1);
                 }
             }
         });
@@ -73,13 +74,13 @@ public class Main {
         Thread equalsThread = new Thread(() -> {
             for (String str : texts) {
                 if (str.length() == LENGTH_3 && hasEqualChars(str)) {
-                    countOf3++;
+                    countOf3.getAndAdd(1);
                 }
                 if (str.length() == LENGTH_4 && hasEqualChars(str)) {
-                    countOf4++;
+                    countOf4.getAndAdd(1);
                 }
                 if (str.length() == LENGTH_5 && hasEqualChars(str)) {
-                    countOf5++;
+                    countOf5.getAndAdd(1);
                 }
             }
         });
@@ -87,13 +88,13 @@ public class Main {
         Thread ascOrderThread = new Thread(() -> {
             for (String str : texts) {
                 if (str.length() == LENGTH_3 && hasAscOrder(str)) {
-                    countOf3++;
+                    countOf3.getAndAdd(1);
                 }
                 if (str.length() == LENGTH_4 && hasAscOrder(str)) {
-                    countOf4++;
+                    countOf4.getAndAdd(1);
                 }
                 if (str.length() == LENGTH_5 && hasAscOrder(str)) {
-                    countOf5++;
+                    countOf5.getAndAdd(1);
                 }
             }
         });
@@ -105,9 +106,9 @@ public class Main {
             palindromeThread.join();
             equalsThread.join();
             ascOrderThread.join();
-            System.out.println("Красивых слов с длиной 3: " + countOf3 + " шт.");
-            System.out.println("Красивых слов с длиной 4: " + countOf4 + " шт.");
-            System.out.println("Красивых слов с длиной 4: " + countOf5 + " шт.");
+            System.out.println("Красивых слов с длиной 3: " + countOf3.get() + " шт.");
+            System.out.println("Красивых слов с длиной 4: " + countOf4.get() + " шт.");
+            System.out.println("Красивых слов с длиной 4: " + countOf5.get() + " шт.");
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
